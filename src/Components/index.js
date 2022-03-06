@@ -1,3 +1,3 @@
 export { default as MainScreen } from "./MainScreen/MainScreen";
-export { default as Favourite } from "./Favourite/Favourite";
-export { default as AddDetails } from "./AddDetails/AddDetails";
+export { default as BookSlot } from "./BookSlot/BookSlot";
+export { default as ViewDetails } from "./ViewDetails/ViewDetails";

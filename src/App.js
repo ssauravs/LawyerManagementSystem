@@ -1,14 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import { Favourite, AddDetails, MainScreen } from "./Components/index";
+import { MainScreen, BookSlot, ViewDetails } from "./Components/index";
+
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainScreen />} />
-          <Route path="/AddDetails" element={<AddDetails />} />
-          <Route path="/Favourite" element={<Favourite />} />
+          <Route path="/BookSlot" element={<BookSlot />} />
+          <Route path="/ViewDetails" element={<ViewDetails />} />
         </Routes>
       </BrowserRouter>
     </div>

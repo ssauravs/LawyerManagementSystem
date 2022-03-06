@@ -1,15 +1,5 @@
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import StarIcon from "@mui/icons-material/Star";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  DeleteData,
-  ChangeFavourite,
-  EditData,
-} from "../../Store/Action/index";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 function MainScreen() {
   const list = useSelector((state) => state.DataReducer);
@@ -17,11 +7,9 @@ function MainScreen() {
     data.edit = false;
     return data;
   });
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const Edit = (index) => {
-    navigate("/AddDetails");
-    dispatch(EditData(index));
+  const ViewDetails = (index) => {
+    navigate("/ViewDetails", { state: index });
   };
   return (
     <div>
@@ -30,35 +18,26 @@ function MainScreen() {
           className="buttonAddAccont"
           variant="contained"
           onClick={() => {
-            navigate("/AddDetails");
+            navigate("/BookSlot");
           }}
           size="large"
-          style={{ marginRight: "10px" }}
-        >
-          Add New Account
-        </Button>
-        <Button
-          variant="contained"
           color="secondary"
-          onClick={() => {
-            navigate("/Favourite");
-          }}
-          size="large"
         >
-          View Favourite
+          Click here to book the slot
         </Button>
       </div>
-      {list.length != 0 && (
+      {list.length !== 0 && (
         <div>
-          <h1>Contact List :-</h1>
+          <h1>Lawyer List :-</h1>
           <table>
             <thead>
               <tr>
                 <th>S.no</th>
-                <th>Name</th>
-                <th>Phone Number</th>
-                <th>Email id</th>
-                <th>Activities</th>
+                <th>Lawyer Name</th>
+                <th>Speciality</th>
+                <th>Cost per hour</th>
+                <th>Availability slots</th>
+                <th>Function</th>
               </tr>
             </thead>
             <tbody>
@@ -67,28 +46,43 @@ function MainScreen() {
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{data.name}</td>
-                    <td>{data.phone}</td>
-                    <td>{data.email}</td>
+                    <td>
+                      {data.speciality.map((data) => {
+                        return (
+                          <tr>
+                            <td className="borderIgnore">{"*"}</td>
+                            <td className="borderIgnore">{data}</td>
+                          </tr>
+                        );
+                      })}
+                    </td>
+                    <td>{data.cost}</td>
+                    <td>
+                      {data.availability.length > 0 ? (
+                        data.availability.map((data) => {
+                          return (
+                            <tr>
+                              <td className="borderIgnore">{"*"}</td>
+                              <td className="borderIgnore">{data}</td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <tr>
+                          <td className="borderIgnore">No slot left</td>
+                        </tr>
+                      )}
+                    </td>
                     <td>
                       {" "}
                       <Button
-                        startIcon={<DeleteIcon />}
-                        onClick={() => dispatch(DeleteData(index))}
-                      />
-                      <Button
-                        onClick={() => Edit(index)}
-                        startIcon={<EditIcon />}
-                      />
-                      <Checkbox
+                        variant="contained"
                         color="primary"
-                        onClick={() => dispatch(ChangeFavourite(index))}
-                        icon={
-                          data.fav == true ? <StarIcon /> : <StarBorderIcon />
-                        }
-                        checkedIcon={
-                          data.fav == true ? <StarBorderIcon /> : <StarIcon />
-                        }
-                      />
+                        onClick={() => ViewDetails(index + 1)}
+                        size="large"
+                      >
+                        View Details
+                      </Button>
                     </td>
                   </tr>
                 );

@@ -1,59 +1,69 @@
 let initialData = [
   {
     name: "Saurav",
-    phone: "9872262189",
-    email: "sauravshrm740@gmail.com",
-    fav: true,
-    edit: false,
+    speciality: ["divorce", "criminal", "property"],
+    cost: 1000,
+    availability: ["3-4pm", "4-5pm", "6-7pm"],
+    booked: [],
   },
   {
     name: "Neha",
-    phone: "7872262187",
-    email: "neha@gmail.com",
-    fav: false,
-    edit: false,
+    speciality: ["Tax", "Criminal", "Civil", "Rights", "Family"],
+    cost: 2000,
+    availability: ["3-4pm", "4-5pm", "6-7pm", "7-8pm"],
+    booked: [],
+  },
+  {
+    name: "Manminder",
+    speciality: ["Corporate", "Immigration"],
+    cost: 700,
+    availability: ["1-2pm", "2-3pm"],
+    booked: [],
+  },
+  {
+    name: "Rahul",
+    speciality: ["divorce", "property"],
+    cost: 2000,
+    availability: ["11-12am", "12-1pm", "1-2pm"],
+    booked: [
+      {
+        name: "Tarun",
+        email: "tarun@gmail.com",
+        slot: "4-5pm",
+        lawyer: "Rahul",
+      },
+    ],
+  },
+  {
+    name: "Akash",
+    speciality: ["Intellectual Property", "Public Interest"],
+    cost: 4000,
+    availability: ["8-9am", "9-10am", "10-11am", "11-12am"],
+    booked: [],
   },
 ];
 const DataReducer = (state = initialData, action) => {
   switch (action.type) {
-    case "ChangeFavourite": {
-      state[action.payload].fav = !state[action.payload].fav;
-      localStorage.setItem("ListOfObj", JSON.stringify(state));
-      return state;
-    }
-    case "DeleteData": {
-      const newObj = state.filter((data, index) => {
-        return index != action.payload;
-      });
-      state = newObj;
-      localStorage.setItem("ListOfObj", JSON.stringify(state));
-      return state;
-    }
     case "AddNewData": {
-      state.push(action.payload);
-      localStorage.setItem("ListOfObj", JSON.stringify(state));
-      return state;
-    }
-    case "EditData": {
-      state[action.payload].edit = !state[action.payload].edit;
-      localStorage.setItem("ListOfObj", JSON.stringify(state));
-      return state;
-    }
-    case "EditList": {
-      const obj = state.filter((data) => {
-        if (data.edit == true) {
-          data.name = action.payload.name;
-          data.email = action.payload.email;
-          data.phone = action.payload.phone;
-          data.edit = false;
+      var index = state.map((data, index) => {
+        if (data.name === action.payload.lawyer) {
+          return index;
         }
-        return data;
       });
-      localStorage.setItem("ListOfObj", JSON.stringify(obj));
-      return obj;
+      var indexs = index.filter((x) => x !== undefined);
+
+      var temp = state[indexs[0]].availability.map((data, index) => {
+        if (data === action.payload.slot) {
+          return index;
+        }
+      });
+      var temps = temp.filter((x) => x !== undefined);
+      state[indexs[0]].booked.push(action.payload);
+      state[indexs[0]].availability.splice(temps[0], 1);
+
+      return state;
     }
     default:
-      localStorage.setItem("ListOfObj", JSON.stringify(state));
       return state;
   }
 };
